@@ -27,6 +27,40 @@ jmp main
 
 Letra : var #1
 
+IncRand: var #1			; Incremento para circular na Tabela de nr. Randomicos
+Rand : var #12			; Tabela de nr. Randomicos entre 0 - 7
+	static Rand + #0, #11
+	static Rand + #1, #17
+	static Rand + #2, #17
+	static Rand + #3, #29
+	static Rand + #4, #23
+	static Rand + #5, #11
+	static Rand + #6, #11
+	static Rand + #7, #29
+	static Rand + #8, #23
+	static Rand + #9, #23
+	static Rand + #10, #23
+	static Rand + #11, #17
+	;static Rand + #12, #0
+	;static Rand + #13, #2
+	;static Rand + #14, #7
+	;static Rand + #15, #5
+	;static Rand + #16, #5
+	;static Rand + #17, #6
+	;static Rand + #18, #7
+	;static Rand + #19, #2
+	;static Rand + #20, #0
+	;static Rand + #20, #7
+	;static Rand + #21, #1
+	;static Rand + #22, #5
+	;static Rand + #23, #6
+	;static Rand + #24, #6
+	;static Rand + #25, #7
+	;static Rand + #26, #0
+	;static Rand + #27, #3
+	;static Rand + #28, #1
+	;static Rand + #29, #1
+
 posNota1 : var #1
 posAntNota1 : var #1
 
@@ -105,28 +139,42 @@ main:
 	store posNota1, r0
 	store posAntNota1, r0
 	
+	loadn r0, #17
 	store posNota2, r0
 	store posAntNota2, r0
 	
+	loadn r0, #23
 	store posNota3, r0
 	store posAntNota3, r0
 	
+	loadn r0, #29
 	store posNota4, r0
 	store posAntNota4, r0
 	
+	
 	loadn R2, #0
-	loadn R4, #0
 	
 	Loop:
-	
-		loadn R3, #5
+		
+		loadn R3, #4
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
-		jeq MoverNota
-		MoverNota:
-			load r0, posNota1
-			load r1, posAntNota1
-			call MoveNota1	; Chama Rotina de movimentacao da Nave
+		ceq MoveNota1	; Chama Rotina de movimentacao da Nave
+		
+		loadn R3, #4
+		mod R3, R2, R3
+		cmp R3, R4		; if (mod(c/10)==0
+		ceq MoveNota2	; Chama Rotina de movimentacao da Nave
+		
+		loadn R3, #4
+		mod R3, R2, R3
+		cmp R3, R4		; if (mod(c/10)==0
+		ceq MoveNota3	; Chama Rotina de movimentacao da Nave
+		
+		loadn R3, #4
+		mod R3, R2, R3
+		cmp R3, R4		; if (mod(c/10)==0
+		ceq MoveNota4	; Chama Rotina de movimentacao da Nave
 	
 		inc R2 	;c++
 		call Delay
@@ -144,8 +192,8 @@ MoveNota1:
 	
 	call MoveNota1_RecalculaPos
 		
-	;load r0, posNota1
-	;load r1, posAntNota1
+	load r0, posNota1
+	load r1, posAntNota1
 	
 	cmp r0, r1	
 	jeq MoveNota1_Skip
@@ -154,8 +202,8 @@ MoveNota1:
 	call MoveNota1_Desenha		
 		
 	MoveNota1_Skip:	
-		;pop r1
-		;pop r0
+		pop r1
+		pop r0
 		rts
 	
 	MoveNota1_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
@@ -165,6 +213,20 @@ MoveNota1:
 		push R3
 
 		load R0, posNota1		
+		
+		loadn R2, #Rand 	; declara ponteiro para tabela rand na memoria!
+		load R1, IncRand	; Pega Incremento da tabela Rand
+		add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
+							; R2 = Rand + IncRand
+		loadi R3, R2 		; busca nr. randomico da memoria em R3
+							; R3 = Rand(IncRand)				
+		inc r1				; Incremento ++
+		loadn r2, #12
+		cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
+		jle MoveNota1_RecalculaPos_Skip
+		loadn r1, #0		; re-estarta a Tabela Rand em 0
+	 	MoveNota1_RecalculaPos_Skip:
+			store IncRand, r1
 		
 		loadn R1, #1159
 		cmp R0, R1		; Testa condicoes de Contorno 
@@ -181,7 +243,7 @@ MoveNota1:
 			rts
 		
 		MoveNota1_Reinicio:
-			loadn R0, #11
+			mov R0, R3
 			jmp MoveNota1_RecalculaPos_Fim
 	
 	
@@ -228,7 +290,7 @@ MoveNota1:
 		push R1
 		push R2
 		
-		Loadn R1, #'@'	; Nave
+		Loadn R1, #'&'	; Nave
 		Loadn R2, #1280
 		add r1, r1, r2
 		load R0, posNota1
@@ -240,13 +302,318 @@ MoveNota1:
 		pop R0
 		rts
 
+MoveNota2:
+	push r0
+	push r1
 	
+	call MoveNota2_RecalculaPos
+		
+	load r0, posNota2
+	load r1, posAntNota2
+	
+	cmp r0, r1	
+	jeq MoveNota2_Skip
+	
+	call MoveNota2_Apaga
+	call MoveNota2_Desenha		
+		
+	MoveNota2_Skip:	
+		pop r1
+		pop r0
+		rts
+	
+	MoveNota2_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+		push R0
+		push R1
+		push R2
+		push R3
+
+		load R0, posNota2		
+		
+		loadn R1, #1159
+		cmp R0, R1		; Testa condicoes de Contorno 
+		jgr MoveNota2_Reinicio
+		loadn R1, #40
+		add R0, R0, R1	; pos = pos + 40
+			
+	 	MoveNota2_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+			store posNota2, R0
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+		MoveNota2_Reinicio:
+			loadn R0, #17
+			jmp MoveNota2_RecalculaPos_Fim
+	
+	
+	MoveNota2_Apaga:
+		push R0
+		push R1
+		push R2
+		push R3
+		push R4
+		push R5
+
+		load R0, posAntNota2	; R0 == posAnt
+		loadn R1, #1200		; R1 = posAnt
+		cmp r0, r1
+		jle MoveNota2_Apaga_Skip
+		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		jmp MoveNota2_Apaga_Fim
+
+	 	MoveNota2_Apaga_Skip:	
+	  
+			; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+			loadn R1, #tela1Linha0	; Endereco onde comeca a primeira linha do cenario!!
+			add R2, R1, r0	; R2 = Tela1Linha0 + posAnt
+			loadn R4, #40
+			div R3, R0, R4	; R3 = posAnt/40
+			add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+			
+			loadi R5, R2	; R5 = Char (Tela(posAnt))
+	  
+	 	MoveNota2_Apaga_Fim:	
+			outchar R5, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+			
+			pop R5
+			pop R4
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+	
+	MoveNota2_Desenha:	; Desenha caractere da Nave
+		push R0
+		push R1
+		push R2
+		
+		Loadn R1, #'@'	; Nave
+		Loadn R2, #256
+		add r1, r1, r2
+		load R0, posNota2
+		outchar R1, R0
+		store posAntNota2, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		
+		pop R2
+		pop R1
+		pop R0
+		rts
+
+MoveNota3:
+	push r0
+	push r1
+	
+	call MoveNota3_RecalculaPos
+		
+	load r0, posNota3
+	load r1, posAntNota3
+	
+	cmp r0, r1	
+	jeq MoveNota3_Skip
+	
+	call MoveNota3_Apaga
+	call MoveNota3_Desenha		
+		
+	MoveNota3_Skip:	
+		pop r1
+		pop r0
+		rts
+	
+	MoveNota3_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+		push R0
+		push R1
+		push R2
+		push R3
+
+		load R0, posNota3		
+		
+		loadn R1, #1159
+		cmp R0, R1		; Testa condicoes de Contorno 
+		jgr MoveNota3_Reinicio
+		loadn R1, #40
+		add R0, R0, R1	; pos = pos + 40
+			
+	 	MoveNota3_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+			store posNota3, R0
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+		MoveNota3_Reinicio:
+			loadn R0, #23
+			jmp MoveNota3_RecalculaPos_Fim
+	
+	
+	MoveNota3_Apaga:
+		push R0
+		push R1
+		push R2
+		push R3
+		push R4
+		push R5
+
+		load R0, posAntNota3	; R0 == posAnt
+		loadn R1, #1200		; R1 = posAnt
+		cmp r0, r1
+		jle MoveNota3_Apaga_Skip
+		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		jmp MoveNota3_Apaga_Fim
+
+	 	MoveNota3_Apaga_Skip:	
+	  
+			; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+			loadn R1, #tela1Linha0	; Endereco onde comeca a primeira linha do cenario!!
+			add R2, R1, r0	; R2 = Tela1Linha0 + posAnt
+			loadn R4, #40
+			div R3, R0, R4	; R3 = posAnt/40
+			add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+			
+			loadi R5, R2	; R5 = Char (Tela(posAnt))
+	  
+	 	MoveNota3_Apaga_Fim:	
+			outchar R5, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+			
+			pop R5
+			pop R4
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+	
+	MoveNota3_Desenha:	; Desenha caractere da Nave
+		push R0
+		push R1
+		push R2
+		
+		Loadn R1, #'$'	; Nave
+		Loadn R2, #2816
+		add r1, r1, r2
+		load R0, posNota3
+		outchar R1, R0
+		store posAntNota3, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		
+		pop R2
+		pop R1
+		pop R0
+		rts
+			
+MoveNota4:
+	push r0
+	push r1
+	
+	call MoveNota4_RecalculaPos
+		
+	load r0, posNota4
+	load r1, posAntNota4
+	
+	cmp r0, r1	
+	jeq MoveNota4_Skip
+	
+	call MoveNota4_Apaga
+	call MoveNota4_Desenha		
+		
+	MoveNota4_Skip:	
+		pop r1
+		pop r0
+		rts
+	
+	MoveNota4_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+		push R0
+		push R1
+		push R2
+		push R3
+
+		load R0, posNota4		
+		
+		loadn R1, #1159
+		cmp R0, R1		; Testa condicoes de Contorno 
+		jgr MoveNota4_Reinicio
+		loadn R1, #40
+		add R0, R0, R1	; pos = pos + 40
+			
+	 	MoveNota4_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+			store posNota4, R0
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+		MoveNota4_Reinicio:
+			loadn R0, #29
+			jmp MoveNota4_RecalculaPos_Fim
+	
+	
+	MoveNota4_Apaga:
+		push R0
+		push R1
+		push R2
+		push R3
+		push R4
+		push R5
+
+		load R0, posAntNota4	; R0 == posAnt
+		loadn R1, #1200		; R1 = posAnt
+		cmp r0, r1
+		jle MoveNota4_Apaga_Skip
+		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		jmp MoveNota4_Apaga_Fim
+
+	 	MoveNota4_Apaga_Skip:	
+	  
+			; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+			loadn R1, #tela1Linha0	; Endereco onde comeca a primeira linha do cenario!!
+			add R2, R1, r0	; R2 = Tela1Linha0 + posAnt
+			loadn R4, #40
+			div R3, R0, R4	; R3 = posAnt/40
+			add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+			
+			loadi R5, R2	; R5 = Char (Tela(posAnt))
+	  
+	 	MoveNota4_Apaga_Fim:	
+			outchar R5, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+			
+			pop R5
+			pop R4
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+	
+	MoveNota4_Desenha:	; Desenha caractere da Nave
+		push R0
+		push R1
+		push R2
+		
+		Loadn R1, #'#'	; Nave
+		Loadn R2, #3072
+		add r1, r1, r2
+		load R0, posNota4
+		outchar R1, R0
+		store posAntNota4, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		
+		pop R2
+		pop R1
+		pop R0
+		rts
+		
 Delay:
 	;Utiliza Push e Pop para nao afetar os registradores do programa principal
 	push r0
 	push r1
 	
-	loadn r1, #10 				; a
+	loadn r1, #5 				; a
    	Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
 	loadn r0, #30000			; b
    	Delay_volta: 
