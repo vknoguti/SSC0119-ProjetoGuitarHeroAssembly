@@ -53,103 +53,9 @@ static mensagem + #20, #'\0'
 mensagem2 : string "Ola Mundo!"
 
 
-telaInicio1Linha0: string "                                        "
-telaInicio1Linha1: string "    ___          __  _____  ___ _____   "
-telaInicio1Linha2: string "   /     |    | |--|   |   |   | |   |  "
-telaInicio1Linha3: string "  |      |    | ||||   |   |   | |___|  "
-telaInicio1Linha4: string "  |_____ |    | ||||   |   |___| |  |   "
-telaInicio1Linha5: string "  |    | |    | ||||   |   |   | |   |  "
-telaInicio1Linha6: string "   |___/ |____| |__/   |   |   | |    | "
-telaInicio1Linha7: string "                ___    ___   _____      "
-telaInicio1Linha8: string "          |   | |     |   |  |   |      "
-telaInicio1Linha9: string "          |___| |___  |___|  |   |      "
-telaInicio1Linha10: string "          |   | |     |  |   |   |      "
-telaInicio1Linha11: string "          |   | |___  |   |  |___|      "
-telaInicio1Linha12: string "                                        "
-telaInicio1Linha13: string "                                        "
-telaInicio1Linha14: string "               ,-.        _.---._       "
-telaInicio1Linha15: string "               |  `..__.-''       `.    "
-telaInicio1Linha16: string "                |  _        _  ,.   |   "
-telaInicio1Linha17: string " ,+++=.__________)_||______|_|_||    |  "
-telaInicio1Linha18: string "(_.ooo.=================||======|=|=||  "
-telaInicio1Linha19: string "   ~~'           |  ~'      `~' o o  /  "
-telaInicio1Linha20: string "                  |   /~|     o o  /    "
-telaInicio1Linha21: string "                  `~'    `-.____.-'     "
-telaInicio1Linha22: string "                                        "
-telaInicio1Linha23: string "                                        "
-telaInicio1Linha24: string "                                        "
-telaInicio1Linha25: string "            |_________________|         "
-telaInicio1Linha26: string "            |JOGUE COM D F J K|         "
-telaInicio1Linha27: string "            |-----------------|         "
-telaInicio1Linha28: string "                                        "
-telaInicio1Linha29: string "Pressione qualquer tecla para continuar:"
+scoreInt : var #4
+scoreChar : var #4
 
-telaInicio2Linha0: string "                                        "
-telaInicio2Linha1: string "    ___          __  _____  ___ _____   "
-telaInicio2Linha2: string "   /     |    | |--|   |   |   | |   |  "
-telaInicio2Linha3: string "  |      |    | ||||   |   |   | |___|  "
-telaInicio2Linha4: string "  |_____ |    | ||||   |   |___| |  |   "
-telaInicio2Linha5: string "  |    | |    | ||||   |   |   | |   |  "
-telaInicio2Linha6: string "   |___/ |____| |__/   |   |   | |    | "
-telaInicio2Linha7: string "                ___    ___   _____      "
-telaInicio2Linha8: string "          |   | |     |   |  |   |      "
-telaInicio2Linha9: string "          |___| |___  |___|  |   |      "
-telaInicio2Linha10: string "          |   | |     |  |   |   |      "
-telaInicio2Linha11: string "          |   | |___  |   |  |___|      "
-telaInicio2Linha12: string "                                        "
-telaInicio2Linha13: string "                                        "
-telaInicio2Linha14: string "                                        "
-telaInicio2Linha15: string "                                        "
-telaInicio2Linha16: string "                                        "
-telaInicio2Linha17: string "                                        "
-telaInicio2Linha18: string "                                        "
-telaInicio2Linha19: string "                                        "
-telaInicio2Linha20: string "                                        "
-telaInicio2Linha21: string "                                        "
-telaInicio2Linha22: string "                                        "
-telaInicio2Linha23: string "                                        "
-telaInicio2Linha24: string "                                        "
-telaInicio2Linha25: string "                                        "
-telaInicio2Linha26: string "                                        "
-telaInicio2Linha27: string "                                        "
-telaInicio2Linha28: string "                                        "
-telaInicio2Linha29: string "Pressione qualquer tecla para continuar:"
-
-
-tela0Linha0  : string "                                        "
-tela0Linha1  : string "                                        "
-tela0Linha2  : string "                                        "
-tela0Linha3  : string "                                        "
-tela0Linha4  : string "                                        "
-tela0Linha5  : string "                                        "
-tela0Linha6  : string "                                        "
-tela0Linha7  : string "                                        "
-tela0Linha8  : string "                                        "
-tela0Linha9  : string "                                        "
-tela0Linha10 : string "                                        "
-tela0Linha11 : string "                                        "
-tela0Linha12 : string "                                        "
-tela0Linha13 : string "                                        "
-tela0Linha14 : string "                                        "
-tela0Linha15 : string "                                        "
-tela0Linha16 : string "                                        "
-tela0Linha17 : string "                                        "
-tela0Linha18 : string "                                        "
-tela0Linha19 : string "                                        "
-tela0Linha20 : string "                                        "
-tela0Linha21 : string "                                        "
-tela0Linha22 : string "                                        "
-tela0Linha23 : string "                                        "
-tela0Linha24 : string "                                        "
-tela0Linha25 : string "                                        "
-tela0Linha26 : string "                                        "
-tela0Linha27 : string "                                        "
-tela0Linha28 : string "                                        "
-tela0Linha29 : string "                                        "	
-
-
-
-telaJogo1: string ""
 
 
 ;---- Inicio do Programa Principal -----
@@ -183,16 +89,119 @@ main:
 	call leTeclado
 	;loadn r3, #'5'
 	
+	
+	
 	loadn r0, #0
 	loadn r2, #256
 	outchar r3, r0
-
+	
+	loadn r3, #495
+	store scoreInt, r3
+	
+	call ImprimeScore
+	
+	loadn r2, #1000
+	add r3, r3, r2
+	store scoreInt, r3
+	call Delay
+	
+	call ImprimeScore
+	
 	halt
 	
 ;---- Fim do Programa Principal -----
 	
 ;---- Inicio das Subrotinas -----
 	
+Delay:
+	;Utiliza Push e Pop para nao afetar os registradores do programa principal
+	push r0
+	push r1
+	
+	loadn r1, #5  				; a
+   	Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
+	loadn r0, #30000			; b
+   	Delay_volta: 
+	dec r0						; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
+	jnz Delay_volta	
+	dec r1
+	jnz Delay_volta2
+	
+	pop r1
+	pop r0
+	
+	rts
+
+ImprimeScore:
+	push r0
+	push r1
+	push r2
+	push r3
+	
+	call ScoreToChar
+	loadn r0, #scoreChar
+	loadn r1, #0
+	loadn r3, #5
+	
+	ImprimeScore_Loop:
+		loadi r2, r0
+		outchar r2, r1
+		
+		inc r0
+		inc r1
+		
+		cmp r1, r3
+		jne ImprimeScore_Loop
+	
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	
+	rts
+	
+
+ScoreToChar:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+	
+	loadn r0, #scoreChar		; Posicao a salvar a pontuacao
+	loadn r1, #48		; 0 em ascii
+	load  r2, scoreInt		; Valor da pontuacao
+	loadn r3, #10000
+	loadn r4, #10
+	loadn r6, #0
+	
+	; Converts each digit of the score to a string
+	ScoreToChar_Loop:
+		div r5,r2,r3 ; r5 = r2/r3
+		add r5,r5,r1 ; Converts the int to char
+		
+		storei r0,r5 ; Stores the digit and increments 
+		inc r0
+		
+		mod r2,r2,r3 ; r2 = r2 % r5
+		
+		div r3,r3,r4 ; r3 = r3/10
+		
+		cmp r3,r6
+		jne ScoreToChar_Loop
+
+	pop r6
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	
+	rts
+
 Imprimestr:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
 	push r0	; protege o r0 na pilha para preservar seu valor
 	push r1	; protege o r1 na pilha para preservar seu valor
@@ -381,3 +390,100 @@ leTeclado:
 	rts
 	
 	
+telaInicio1Linha0 : string "                                        "
+telaInicio1Linha1 : string "                                        "
+telaInicio1Linha2 : string "                                        "
+telaInicio1Linha3 : string "                                        "
+telaInicio1Linha4 : string "                                        "
+telaInicio1Linha5 : string "                                        "
+telaInicio1Linha6 : string "                                        "
+telaInicio1Linha7 : string "                                        "
+telaInicio1Linha8 : string "                                        "
+telaInicio1Linha9 : string "                                        "
+telaInicio1Linha10: string "                                        "
+telaInicio1Linha11: string "                                        "
+telaInicio1Linha12: string "                                        "
+telaInicio1Linha13: string "                                        "
+telaInicio1Linha14: string "               ,-.        _.---._       "
+telaInicio1Linha15: string "               |  `..__.-''       `.    "
+telaInicio1Linha16: string "                |  _        _  ,.   |   "
+telaInicio1Linha17: string " ,+++=.__________)_||______|_|_||    |  "
+telaInicio1Linha18: string "(_.ooo.=================||======|=|=||  "
+telaInicio1Linha19: string "   ~~'           |  ~'      `~' o o  /  "
+telaInicio1Linha20: string "                  |   /~|     o o  /    "
+telaInicio1Linha21: string "                  `~'    `-.____.-'     "
+telaInicio1Linha22: string "                                        "
+telaInicio1Linha23: string "                                        "
+telaInicio1Linha24: string "                                        "
+telaInicio1Linha25: string "            |_________________|         "
+telaInicio1Linha26: string "            |JOGUE COM D F J K|         "
+telaInicio1Linha27: string "            |-----------------|         "
+telaInicio1Linha28: string "                                        "
+telaInicio1Linha29: string "                                        "
+
+telaInicio2Linha0: string  "                                        "
+telaInicio2Linha1: string  "    ___          __  _____  ___ _____   "
+telaInicio2Linha2: string  "   /     |    | |--|   |   |   | |   |  "
+telaInicio2Linha3: string  "  |      |    | ||||   |   |   | |___|  "
+telaInicio2Linha4: string  "  |_____ |    | ||||   |   |___| |  |   "
+telaInicio2Linha5: string  "  |    | |    | ||||   |   |   | |   |  "
+telaInicio2Linha6: string  "   |___/ |____| |__/   |   |   | |    | "
+telaInicio2Linha7: string  "                ___    ___   _____      "
+telaInicio2Linha8: string  "          |   | |     |   |  |   |      "
+telaInicio2Linha9: string  "          |___| |___  |___|  |   |      "
+telaInicio2Linha10: string "          |   | |     |  |   |   |      "
+telaInicio2Linha11: string "          |   | |___  |   |  |___|      "
+telaInicio2Linha12: string "                                        "
+telaInicio2Linha13: string "                                        "
+telaInicio2Linha14: string "                                        "
+telaInicio2Linha15: string "                                        "
+telaInicio2Linha16: string "                                        "
+telaInicio2Linha17: string "                                        "
+telaInicio2Linha18: string "                                        "
+telaInicio2Linha19: string "                                        "
+telaInicio2Linha20: string "                                        "
+telaInicio2Linha21: string "                                        "
+telaInicio2Linha22: string "                                        "
+telaInicio2Linha23: string "                                        "
+telaInicio2Linha24: string "                                        "
+telaInicio2Linha25: string "                                        "
+telaInicio2Linha26: string "                                        "
+telaInicio2Linha27: string "                                        "
+telaInicio2Linha28: string "                                        "
+telaInicio2Linha29: string "Pressione qualquer tecla para continuar:"
+
+
+tela0Linha0  : string "                                        "
+tela0Linha1  : string "                                        "
+tela0Linha2  : string "                                        "
+tela0Linha3  : string "                                        "
+tela0Linha4  : string "                                        "
+tela0Linha5  : string "                                        "
+tela0Linha6  : string "                                        "
+tela0Linha7  : string "                                        "
+tela0Linha8  : string "                                        "
+tela0Linha9  : string "                                        "
+tela0Linha10 : string "                                        "
+tela0Linha11 : string "                                        "
+tela0Linha12 : string "                                        "
+tela0Linha13 : string "                                        "
+tela0Linha14 : string "                                        "
+tela0Linha15 : string "                                        "
+tela0Linha16 : string "                                        "
+tela0Linha17 : string "                                        "
+tela0Linha18 : string "                                        "
+tela0Linha19 : string "                                        "
+tela0Linha20 : string "                                        "
+tela0Linha21 : string "                                        "
+tela0Linha22 : string "                                        "
+tela0Linha23 : string "                                        "
+tela0Linha24 : string "                                        "
+tela0Linha25 : string "                                        "
+tela0Linha26 : string "                                        "
+tela0Linha27 : string "                                        "
+tela0Linha28 : string "                                        "
+tela0Linha29 : string "                                        "	
+
+
+
+telaJogo1: string ""
