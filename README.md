@@ -2,7 +2,7 @@
 ## Batalha Naval
 ## Instrução a ser adicionada
 NAND
-## defs.h
+### defs.h
 ```c
 #define BREAKP_CODE             94
 #define LMOD_CODE               95
@@ -23,7 +23,7 @@ NAND
 /* NAND */
 #define NAND_STR				"NAND"
 ```
-## montador.c
+### montador.c
 ```c
 /* Instrucoes de 3 argumentos e 1 linha : instr (), (), () -> [...] */
             case ADD_CODE :
