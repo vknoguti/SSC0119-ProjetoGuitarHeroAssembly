@@ -156,25 +156,27 @@ main:
 	
 	Loop:
 		
-		loadn R3, #4
+		loadn R3, #8
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota1	; Chama Rotina de movimentacao da Nave
 		
-		loadn R3, #4
+		loadn R3, #8
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota2	; Chama Rotina de movimentacao da Nave
 		
-		loadn R3, #4
+		loadn R3, #8
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota3	; Chama Rotina de movimentacao da Nave
 		
-		loadn R3, #4
+		loadn R3, #8
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota4	; Chama Rotina de movimentacao da Nave
+		
+		call ChecaPos
 	
 		inc R2 	;c++
 		call Delay
@@ -214,20 +216,6 @@ MoveNota1:
 
 		load R0, posNota1		
 		
-		loadn R2, #Rand 	; declara ponteiro para tabela rand na memoria!
-		load R1, IncRand	; Pega Incremento da tabela Rand
-		add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
-							; R2 = Rand + IncRand
-		loadi R3, R2 		; busca nr. randomico da memoria em R3
-							; R3 = Rand(IncRand)				
-		inc r1				; Incremento ++
-		loadn r2, #12
-		cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
-		jle MoveNota1_RecalculaPos_Skip
-		loadn r1, #0		; re-estarta a Tabela Rand em 0
-	 	MoveNota1_RecalculaPos_Skip:
-			store IncRand, r1
-		
 		loadn R1, #1159
 		cmp R0, R1		; Testa condicoes de Contorno 
 		jgr MoveNota1_Reinicio
@@ -243,7 +231,7 @@ MoveNota1:
 			rts
 		
 		MoveNota1_Reinicio:
-			mov R0, R3
+			loadn R0, #11
 			jmp MoveNota1_RecalculaPos_Fim
 	
 	
@@ -607,6 +595,120 @@ MoveNota4:
 		pop R1
 		pop R0
 		rts
+
+ChecaPos:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	
+	inchar R1				; Le Teclado para controlar a Nave
+	loadn R5, #0
+
+	loadn R2, #'d'
+	cmp R1, R2
+	jeq ColisaoPos_D
+	
+	loadn R2, #'f'
+	cmp R1, R2
+	jeq ColisaoPos_F
+		
+	loadn R2, #'j'
+	cmp R1, R2
+	jeq ColisaoPos_J
+	
+	loadn R2, #'k'
+	cmp R1, R2
+	jeq ColisaoPos_K
+	
+	ChecaPos_Fim:
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+	
+	
+	ColisaoPos_D:
+		loadn r0, #tela1Linha0
+		load r1, posNota1
+		add r2, r1, r0
+		loadn R4, #40
+		div R3, R0, R4	; R3 = posAnt/40
+		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
+		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		loadn R4, #'='
+		cmp r5, r4			
+		jne ChecaPos_Fim
+		
+		load r3, scoreInt
+		loadn r4, #20
+		add r3, r3, r4
+		store scoreInt, r3
+		call ImprimeScore
+		jmp ChecaPos_Fim
+	
+	ColisaoPos_F:
+		loadn r0, #tela1Linha0
+		load r1, posNota1
+		add r2, r1, r0
+		loadn R4, #40
+		div R3, R0, R4	; R3 = posAnt/40
+		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
+		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		loadn R4, #'='
+		cmp r5, r4			
+		jne ChecaPos_Fim
+		
+		load r3, scoreInt
+		loadn r4, #20
+		add r3, r3, r4
+		store scoreInt, r3
+		call ImprimeScore
+		jmp ChecaPos_Fim
+		
+	ColisaoPos_J:
+		loadn r0, #tela1Linha0
+		load r1, posNota1
+		add r2, r1, r0
+		loadn R4, #40
+		div R3, R0, R4	; R3 = posAnt/40
+		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
+		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		loadn R4, #'='
+		cmp r5, r4			
+		jne ChecaPos_Fim
+		
+		load r3, scoreInt
+		loadn r4, #20
+		add r3, r3, r4
+		store scoreInt, r3
+		call ImprimeScore
+		jmp ChecaPos_Fim
+		
+	ColisaoPos_K:
+		loadn r0, #tela1Linha0
+		load r1, posNota1
+		add r2, r1, r0
+		loadn R4, #40
+		div R3, R0, R4	; R3 = posAnt/40
+		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
+		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		loadn R4, #'='
+		cmp r5, r4			
+		jne ChecaPos_Fim
+		
+		load r3, scoreInt
+		loadn r4, #20
+		add r3, r3, r4
+		store scoreInt, r3
+		call ImprimeScore
+		jmp ChecaPos_Fim
+
 		
 Delay:
 	;Utiliza Push e Pop para nao afetar os registradores do programa principal
@@ -967,15 +1069,15 @@ telaJogo1Linha14 : string "        |     |     |     |     |       "
 telaJogo1Linha15 : string "        |     |     |     |     |       "
 telaJogo1Linha16 : string "        |     |     |     |     |       "
 telaJogo1Linha17 : string "        |     |     |     |     |       "
-telaJogo1Linha18 : string "        |     |     |     |     |       "
-telaJogo1Linha19 : string "        |     |     |     |     |       "
-telaJogo1Linha20 : string "        |     |     |     |     |       "
-telaJogo1Linha21 : string "        |     |     |     |     |       "
-telaJogo1Linha22 : string "        |     |     |     |     |       "
-telaJogo1Linha23 : string "        |     |     |     |     |       "
-telaJogo1Linha24 : string "        |     |     |     |     |       "
+telaJogo1Linha18 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha19 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha20 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha21 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha22 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha23 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha24 : string "        |=====|=====|=====|=====|       "
 telaJogo1Linha25 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha26 : string "        |     |     |     |     |       "
+telaJogo1Linha26 : string "        |=====|=====|=====|=====|       "
 telaJogo1Linha27 : string "        |     |     |     |     |       "
 telaJogo1Linha28 : string "        |     |     |     |     |       "
 telaJogo1Linha29 : string "           D     F     J     K          "
