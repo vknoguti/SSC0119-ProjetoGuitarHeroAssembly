@@ -25,33 +25,19 @@
 
 jmp main
 
+Letra : var #1
 
-mensagem : var #21
-static mensagem + #0, #'A'
-static mensagem + #1, #'A'
-static mensagem + #2, #'A'
-static mensagem + #3, #'a'
-static mensagem + #4, #'B'
-static mensagem + #5, #'C'
-static mensagem + #6, #'E'
-static mensagem + #7, #'N'
-static mensagem + #8, #'T'
-static mensagem + #9, #'E'
-static mensagem + #10, #'R'
-static mensagem + #11, #' '
-static mensagem + #12, #'T'
-static mensagem + #13, #'O'
-static mensagem + #14, #' '
-static mensagem + #15, #'S'
-static mensagem + #16, #'T'
-static mensagem + #17, #'A'
-static mensagem + #18, #'R'
-static mensagem + #19, #'T'
-static mensagem + #20, #'\0'
+posNota1 : var #1
+posAntNota1 : var #1
 
+posNota2 : var #1
+posAntNota2 : var #1
 
-mensagem2 : string "Ola Mundo!"
+posNota3 : var #1
+posAntNota3 : var #1
 
+posNota4 : var #1
+posAntNota4 : var #1
 
 scoreInt : var #4
 scoreChar : var #4
@@ -81,6 +67,7 @@ main:
 	
 	loadn r1, #telaInicio2Linha0
 	loadn r2, #0
+	loadn r6, #tela0Linha0
 	call ImprimeTela2
 	
 	;call Imprimestr   ;  r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
@@ -105,20 +92,161 @@ main:
 	store scoreInt, r3
 	call Delay
 	
+	call ApagaTela
+	
+	loadn r1, #telaJogo1Linha0
+	loadn r2, #0
+	loadn r6, #tela1Linha0
+	call ImprimeTela2
+	
 	call ImprimeScore
+	
+	loadn r0, #11
+	store posNota1, r0
+	store posAntNota1, r0
+	
+	store posNota2, r0
+	store posAntNota2, r0
+	
+	store posNota3, r0
+	store posAntNota3, r0
+	
+	store posNota4, r0
+	store posAntNota4, r0
+	
+	loadn R2, #0
+	loadn R4, #0
+	
+	Loop:
+	
+		loadn R3, #5
+		mod R3, R2, R3
+		cmp R3, R4		; if (mod(c/10)==0
+		jeq MoverNota
+		MoverNota:
+			load r0, posNota1
+			load r1, posAntNota1
+			call MoveNota1	; Chama Rotina de movimentacao da Nave
+	
+		inc R2 	;c++
+		call Delay
+		jmp Loop
 	
 	halt
 	
 ;---- Fim do Programa Principal -----
 	
 ;---- Inicio das Subrotinas -----
+
+MoveNota1:
+	push r0
+	push r1
+	
+	call MoveNota1_RecalculaPos
+		
+	;load r0, posNota1
+	;load r1, posAntNota1
+	
+	cmp r0, r1	
+	jeq MoveNota1_Skip
+	
+	call MoveNota1_Apaga
+	call MoveNota1_Desenha		
+		
+	MoveNota1_Skip:	
+		;pop r1
+		;pop r0
+		rts
+	
+	MoveNota1_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+		push R0
+		push R1
+		push R2
+		push R3
+
+		load R0, posNota1		
+		
+		loadn R1, #1159
+		cmp R0, R1		; Testa condicoes de Contorno 
+		jgr MoveNota1_Reinicio
+		loadn R1, #40
+		add R0, R0, R1	; pos = pos + 40
+			
+	 	MoveNota1_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+			store posNota1, R0
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+		MoveNota1_Reinicio:
+			loadn R0, #11
+			jmp MoveNota1_RecalculaPos_Fim
+	
+	
+	MoveNota1_Apaga:
+		push R0
+		push R1
+		push R2
+		push R3
+		push R4
+		push R5
+
+		load R0, posAntNota1	; R0 == posAnt
+		loadn R1, #1200		; R1 = posAnt
+		cmp r0, r1
+		jle MoveNota1_Apaga_Skip
+		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		jmp MoveNota1_Apaga_Fim
+
+	 	MoveNota1_Apaga_Skip:	
+	  
+			; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+			loadn R1, #tela1Linha0	; Endereco onde comeca a primeira linha do cenario!!
+			add R2, R1, r0	; R2 = Tela1Linha0 + posAnt
+			loadn R4, #40
+			div R3, R0, R4	; R3 = posAnt/40
+			add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+			
+			loadi R5, R2	; R5 = Char (Tela(posAnt))
+	  
+	 	MoveNota1_Apaga_Fim:	
+			outchar R5, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+			
+			pop R5
+			pop R4
+			pop R3
+			pop R2
+			pop R1
+			pop R0
+			rts
+		
+	
+	MoveNota1_Desenha:	; Desenha caractere da Nave
+		push R0
+		push R1
+		push R2
+		
+		Loadn R1, #'@'	; Nave
+		Loadn R2, #1280
+		add r1, r1, r2
+		load R0, posNota1
+		outchar R1, R0
+		store posAntNota1, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		
+		pop R2
+		pop R1
+		pop R0
+		rts
+
 	
 Delay:
 	;Utiliza Push e Pop para nao afetar os registradores do programa principal
 	push r0
 	push r1
 	
-	loadn r1, #5  				; a
+	loadn r1, #10 				; a
    	Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
 	loadn r0, #30000			; b
    	Delay_volta: 
@@ -140,8 +268,8 @@ ImprimeScore:
 	
 	call ScoreToChar
 	loadn r0, #scoreChar
-	loadn r1, #0
-	loadn r3, #5
+	loadn r1, #80
+	loadn r3, #85
 	
 	ImprimeScore_Loop:
 		loadi r2, r0
@@ -254,10 +382,10 @@ clear:
 
 	
 	
-ImprimeTela: 	;  Rotina de Impresao de Cenario na Tela Inteira
-		;  r1 = endereco onde comeca a primeira linha do Cenario
-		;  r2 = cor do Cenario para ser impresso
-
+ImprimeTela: 
+	;  Rotina de Impresao de Cenario na Tela Inteira
+	;  r1 = endereco onde comeca a primeira linha do Cenario
+	;  r2 = cor do Cenario para ser impresso
 	push r0	; protege o r3 na pilha para ser usado na subrotina
 	push r1	; protege o r1 na pilha para preservar seu valor
 	push r2	; protege o r1 na pilha para preservar seu valor
@@ -286,9 +414,10 @@ ImprimeTela: 	;  Rotina de Impresao de Cenario na Tela Inteira
 	pop r0
 	rts
 	
-ImprimeTela2: 	;  Rotina de Impresao de Cenario na Tela Inteira
-		;  r1 = endereco onde comeca a primeira linha do Cenario
-		;  r2 = cor do Cenario para ser impresso
+ImprimeTela2: 	
+	;  Rotina de Impresao de Cenario na Tela Inteira
+	;  r1 = endereco onde comeca a primeira linha do Cenario
+	;  r2 = cor do Cenario para ser impresso
 
 	push r0	; protege o r3 na pilha para ser usado na subrotina
 	push r1	; protege o r1 na pilha para preservar seu valor
@@ -302,7 +431,7 @@ ImprimeTela2: 	;  Rotina de Impresao de Cenario na Tela Inteira
 	loadn R3, #40  	; Incremento da posicao da tela!
 	loadn R4, #41  	; incremento do ponteiro das linhas da tela
 	loadn R5, #1200 ; Limite da tela!
-	loadn R6, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
+	;loadn R6, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
 	
    ImprimeTela2_Loop:
 		call ImprimeStr2
@@ -453,6 +582,37 @@ telaInicio2Linha28: string "                                        "
 telaInicio2Linha29: string "Pressione qualquer tecla para continuar:"
 
 
+telaJogo1Linha0  : string "SCORE   |     |     |     |     |       "
+telaJogo1Linha1  : string "        |     |     |     |     |       "
+telaJogo1Linha2  : string "        |     |     |     |     |       "
+telaJogo1Linha3  : string "        |     |     |     |     |       "
+telaJogo1Linha4  : string "        |     |     |     |     |       "
+telaJogo1Linha5  : string "        |     |     |     |     |       "
+telaJogo1Linha6  : string "        |     |     |     |     |       "
+telaJogo1Linha7  : string "        |     |     |     |     |       "
+telaJogo1Linha8  : string "        |     |     |     |     |       "
+telaJogo1Linha9  : string "        |     |     |     |     |       "
+telaJogo1Linha10 : string "        |     |     |     |     |       "
+telaJogo1Linha11 : string "        |     |     |     |     |       "
+telaJogo1Linha12 : string "        |     |     |     |     |       "
+telaJogo1Linha13 : string "        |     |     |     |     |       "
+telaJogo1Linha14 : string "        |     |     |     |     |       "
+telaJogo1Linha15 : string "        |     |     |     |     |       "
+telaJogo1Linha16 : string "        |     |     |     |     |       "
+telaJogo1Linha17 : string "        |     |     |     |     |       "
+telaJogo1Linha18 : string "        |     |     |     |     |       "
+telaJogo1Linha19 : string "        |     |     |     |     |       "
+telaJogo1Linha20 : string "        |     |     |     |     |       "
+telaJogo1Linha21 : string "        |     |     |     |     |       "
+telaJogo1Linha22 : string "        |     |     |     |     |       "
+telaJogo1Linha23 : string "        |     |     |     |     |       "
+telaJogo1Linha24 : string "        |     |     |     |     |       "
+telaJogo1Linha25 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha26 : string "        |     |     |     |     |       "
+telaJogo1Linha27 : string "        |     |     |     |     |       "
+telaJogo1Linha28 : string "        |     |     |     |     |       "
+telaJogo1Linha29 : string "           D     F     J     K          "
+
 tela0Linha0  : string "                                        "
 tela0Linha1  : string "                                        "
 tela0Linha2  : string "                                        "
@@ -484,6 +644,33 @@ tela0Linha27 : string "                                        "
 tela0Linha28 : string "                                        "
 tela0Linha29 : string "                                        "	
 
-
-
-telaJogo1: string ""
+tela1Linha0  : string "                                        "
+tela1Linha1  : string "                                        "
+tela1Linha2  : string "                                        "
+tela1Linha3  : string "                                        "
+tela1Linha4  : string "                                        "
+tela1Linha5  : string "                                        "
+tela1Linha6  : string "                                        "
+tela1Linha7  : string "                                        "
+tela1Linha8  : string "                                        "
+tela1Linha9  : string "                                        "
+tela1Linha10 : string "                                        "
+tela1Linha11 : string "                                        "
+tela1Linha12 : string "                                        "
+tela1Linha13 : string "                                        "
+tela1Linha14 : string "                                        "
+tela1Linha15 : string "                                        "
+tela1Linha16 : string "                                        "
+tela1Linha17 : string "                                        "
+tela1Linha18 : string "                                        "
+tela1Linha19 : string "                                        "
+tela1Linha20 : string "                                        "
+tela1Linha21 : string "                                        "
+tela1Linha22 : string "                                        "
+tela1Linha23 : string "                                        "
+tela1Linha24 : string "                                        "
+tela1Linha25 : string "                                        "
+tela1Linha26 : string "                                        "
+tela1Linha27 : string "                                        "
+tela1Linha28 : string "                                        "
+tela1Linha29 : string "                                        "
