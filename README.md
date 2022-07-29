@@ -86,12 +86,12 @@ Implementação da instrução aritmética NAND.
             {
                 return NAND_CODE;
             }
-	    
+```
 ## Guitar Hero
 O jogo é uma implementação em Assembly do tão conhecido jogo Guitar Hero.
 ### Modo de Jogar
 O usuário deve pressionar D, F, J, K no momento exato em que as teclas sobrepõem o símbolo representado pelo '='. Caso acerte, sua pontuação score aumentará em 20, caso contrário, não aumentará. 
 O objetivo do jogo é marcar a máxima pontuação possível durante a partida. Ao final é exibido seu score na tela final, perguntando se o player deseja jogar novamente.
 	    
-```    
+
           
