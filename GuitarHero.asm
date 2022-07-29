@@ -1,6 +1,3 @@
-; Hello World - Escreve mensagem armazenada na memoria na tela
-
-
 ; ------- TABELA DE CORES -------
 ; adicione ao caracter para Selecionar a cor correspondente
 
@@ -27,110 +24,60 @@ jmp main
 
 Letra : var #1
 
-IncRand: var #1			; Incremento para circular na Tabela de nr. Randomicos
-Rand : var #12			; Tabela de nr. Randomicos entre 0 - 7
-	static Rand + #0, #11
-	static Rand + #1, #17
-	static Rand + #2, #17
-	static Rand + #3, #29
-	static Rand + #4, #23
-	static Rand + #5, #11
-	static Rand + #6, #11
-	static Rand + #7, #29
-	static Rand + #8, #23
-	static Rand + #9, #23
-	static Rand + #10, #23
-	static Rand + #11, #17
-	;static Rand + #12, #0
-	;static Rand + #13, #2
-	;static Rand + #14, #7
-	;static Rand + #15, #5
-	;static Rand + #16, #5
-	;static Rand + #17, #6
-	;static Rand + #18, #7
-	;static Rand + #19, #2
-	;static Rand + #20, #0
-	;static Rand + #20, #7
-	;static Rand + #21, #1
-	;static Rand + #22, #5
-	;static Rand + #23, #6
-	;static Rand + #24, #6
-	;static Rand + #25, #7
-	;static Rand + #26, #0
-	;static Rand + #27, #3
-	;static Rand + #28, #1
-	;static Rand + #29, #1
-
+;Variaveis de posicao da nota 1 'D'
 posNota1 : var #1
 posAntNota1 : var #1
 
+;Variaveis de posicao da nota 1 'F'
 posNota2 : var #1
 posAntNota2 : var #1
 
+;Variaveis de posicao da nota 1 'J'
 posNota3 : var #1
 posAntNota3 : var #1
 
+;Variaveis de posicao da nota 1 'K'
 posNota4 : var #1
 posAntNota4 : var #1
 
+;Armazena os valores do score
 scoreInt : var #4
 scoreChar : var #4
-
-
 
 ;---- Inicio do Programa Principal -----
 
 main:
 
-	loadn r0, #0
-	loadn r1, #1
-	loadn r2, #2
-
-	;loadn r0, #0		; Posicao na tela onde a mensagem sera' escrita
-	;loadn r1, #mensagemIniciar	; Carrega r1 com o endereco do vetor que contem a mensagem
-	;loadn r2, #256		; Seleciona a COR da Mensagem
-	
-	;call printaMenu
-	
-	call ApagaTela
-	
-	
+	;Impressao dos caracteres amarelos da tela de menu
 	loadn r1, #telaInicio1Linha0
 	loadn r2, #2816
 	call ImprimeTela
 	
+	;Impressao dos caracteres brancos da tela de menu
 	loadn r1, #telaInicio2Linha0
 	loadn r2, #0
 	loadn r6, #tela0Linha0
 	call ImprimeTela2
 	
-	;call Imprimestr   ;  r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
+	;Espera que o usuario pressione uma tecla para prosseguir ao jogo
+	call DigLetra
 	
 	
-	call leTeclado
-	;loadn r3, #'5'
-	
-	
-	
-	loadn r0, #0
-	loadn r2, #256
-	outchar r3, r0
-	
-	loadn r3, #0
-	store scoreInt, r3
-	
-	call ImprimeScore
-	
-
+	;Limpa o conteudo da tela
 	call ApagaTela
 	
+	;Imprime a tela de jogo
 	loadn r1, #telaJogo1Linha0
 	loadn r2, #0
 	loadn r6, #tela1Linha0
 	call ImprimeTela2
 	
+	;Imprime o score, que é iniciado por zero
+	loadn r3, #0
+	store scoreInt, r3
 	call ImprimeScore
 	
+	;Inicia os valores das posições iniciais de cada Nota
 	loadn r0, #11
 	store posNota1, r0
 	store posAntNota1, r0
@@ -147,56 +94,67 @@ main:
 	store posNota4, r0
 	store posAntNota4, r0
 	
-	
+	;Loop principal do jogo
+	loadn r2, #0 	; r2 armazena a contagem do jogo
 	Loop:
-		
+	
+		;O valor em R3 Determina a velocidade das notas
 		loadn R3, #3
-		mod R3, R2, R3
-		cmp R3, R4		; if (mod(c/10)==0
-		ceq MoveNota1	; Chama Rotina de movimentacao da Nave
+		mod R3, R2, R3	
+		cmp R3, R4		; if (mod(c/3)==0
+		ceq MoveNota1	; Movimenta a nota 1
 		
 		loadn R3, #4
 		mod R3, R2, R3
-		cmp R3, R4		; if (mod(c/10)==0
-		ceq MoveNota2	; Chama Rotina de movimentacao da Nave
+		cmp R3, R4		; if (mod(c/4)==0
+		ceq MoveNota2	; Movimenta a nota 2
 		
 		loadn R3, #5
 		mod R3, R2, R3
-		cmp R3, R4		; if (mod(c/10)==0
-		ceq MoveNota3	; Chama Rotina de movimentacao da Nave
+		cmp R3, R4		; if (mod(c/5)==0
+		ceq MoveNota3	; Movimenta a nota 3
 		
 		loadn R3, #7
 		mod R3, R2, R3
-		cmp R3, R4		; if (mod(c/10)==0
-		ceq MoveNota4	; Chama Rotina de movimentacao da Nave
+		cmp R3, R4		; if (mod(c/7)==0
+		ceq MoveNota4	; Movimenta a nota 4
 		
-		call ChecaPos
+		;Calcula o atual score e o exibe na tela
+		call ChecaPontuacao
 	
-		inc R2 	;c++
+		;Incrementa o contador
+		inc R2 	;
 		call Delay
 		
+		;Chama a subrotina Fim caso a quantidade de tempo por jogo terminar
+		;ou continua no Loop do jogo caso contrário
 		loadn r0, #3500
 		cmp r2, r0
 		jgr Fim
 	
 		jmp Loop
-		
+	
 	Fim:
+		;Modifica para a tela final
 		loadn r1, #telaFinal1Linha0
 		loadn r2, #0
 		loadn r6, #tela1Linha0
 		call ImprimeTela
 		call ImprimeScoreFinal
 		
+		;Verifica se o usuario deseja jogar novamente
 		call DigLetra
 		loadn r0, #'s'
 		load r1, Letra
-		cmp r0, r1	; tecla == 's' ?
-		jeq main	; tecla nao e' 's'
-	
+		cmp r0, r1	
+		jeq main	; tecla == 's'
+					; fim do programa caso tecla != 's'
+		
 	halt
 	
 ;---- Fim do Programa Principal -----
+
+	
 	
 ;---- Inicio das Subrotinas -----
 
@@ -220,7 +178,7 @@ MoveNota1:
 		pop r0
 		rts
 	
-	MoveNota1_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+	MoveNota1_RecalculaPos:		; Recalcula posicao da Nota 1 em funcao das Teclas pressionadas
 		push R0
 		push R1
 		push R2
@@ -234,7 +192,7 @@ MoveNota1:
 		loadn R1, #40
 		add R0, R0, R1	; pos = pos + 40
 			
-	 	MoveNota1_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+	 	MoveNota1_RecalculaPos_Fim:	 		
 			store posNota1, R0
 			pop R3
 			pop R2
@@ -255,11 +213,11 @@ MoveNota1:
 		push R4
 		push R5
 
-		load R0, posAntNota1	; R0 == posAnt
-		loadn R1, #1200		; R1 = posAnt
+		load R0, posAntNota1	
+		loadn R1, #1200		
 		cmp r0, r1
 		jle MoveNota1_Apaga_Skip
-		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		loadn r5, #' '		
 		jmp MoveNota1_Apaga_Fim
 
 	 	MoveNota1_Apaga_Skip:	
@@ -285,7 +243,7 @@ MoveNota1:
 			rts
 		
 	
-	MoveNota1_Desenha:	; Desenha caractere da Nave
+	MoveNota1_Desenha:	; Desenha caractere da Nota
 		push R0
 		push R1
 		push R2
@@ -295,7 +253,7 @@ MoveNota1:
 		add r1, r1, r2
 		load R0, posNota1
 		outchar R1, R0
-		store posAntNota1, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		store posAntNota1, R0	; Atualiza Posicao Anterior da Nota = Posicao Atual
 		
 		pop R2
 		pop R1
@@ -322,7 +280,7 @@ MoveNota2:
 		pop r0
 		rts
 	
-	MoveNota2_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+	MoveNota2_RecalculaPos:		
 		push R0
 		push R1
 		push R2
@@ -336,7 +294,7 @@ MoveNota2:
 		loadn R1, #40
 		add R0, R0, R1	; pos = pos + 40
 			
-	 	MoveNota2_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+	 	MoveNota2_RecalculaPos_Fim:	 		
 			store posNota2, R0
 			pop R3
 			pop R2
@@ -357,11 +315,11 @@ MoveNota2:
 		push R4
 		push R5
 
-		load R0, posAntNota2	; R0 == posAnt
-		loadn R1, #1200		; R1 = posAnt
+		load R0, posAntNota2	
+		loadn R1, #1200		
 		cmp r0, r1
 		jle MoveNota2_Apaga_Skip
-		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		loadn r5, #' '		; 
 		jmp MoveNota2_Apaga_Fim
 
 	 	MoveNota2_Apaga_Skip:	
@@ -387,7 +345,7 @@ MoveNota2:
 			rts
 		
 	
-	MoveNota2_Desenha:	; Desenha caractere da Nave
+	MoveNota2_Desenha:	;Desenha o caractere da Nota
 		push R0
 		push R1
 		push R2
@@ -397,7 +355,7 @@ MoveNota2:
 		add r1, r1, r2
 		load R0, posNota2
 		outchar R1, R0
-		store posAntNota2, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		store posAntNota2, R0	; Atualiza Posicao Anterior da Nota = Posicao Atual
 		
 		pop R2
 		pop R1
@@ -424,7 +382,7 @@ MoveNota3:
 		pop r0
 		rts
 	
-	MoveNota3_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+	MoveNota3_RecalculaPos:		
 		push R0
 		push R1
 		push R2
@@ -438,7 +396,7 @@ MoveNota3:
 		loadn R1, #40
 		add R0, R0, R1	; pos = pos + 40
 			
-	 	MoveNota3_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+	 	MoveNota3_RecalculaPos_Fim:	 		
 			store posNota3, R0
 			pop R3
 			pop R2
@@ -459,11 +417,11 @@ MoveNota3:
 		push R4
 		push R5
 
-		load R0, posAntNota3	; R0 == posAnt
-		loadn R1, #1200		; R1 = posAnt
+		load R0, posAntNota3	
+		loadn R1, #1200		
 		cmp r0, r1
 		jle MoveNota3_Apaga_Skip
-		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		loadn r5, #' '		; 
 		jmp MoveNota3_Apaga_Fim
 
 	 	MoveNota3_Apaga_Skip:	
@@ -489,7 +447,7 @@ MoveNota3:
 			rts
 		
 	
-	MoveNota3_Desenha:	; Desenha caractere da Nave
+	MoveNota3_Desenha:	;Desenha o caractere da Nota
 		push R0
 		push R1
 		push R2
@@ -499,7 +457,7 @@ MoveNota3:
 		add r1, r1, r2
 		load R0, posNota3
 		outchar R1, R0
-		store posAntNota3, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		store posAntNota3, R0	; Atualiza Posicao Anterior da Nota = Posicao Atual
 		
 		pop R2
 		pop R1
@@ -527,7 +485,7 @@ MoveNota4:
 		pop r0
 		rts
 	
-	MoveNota4_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressionadas
+	MoveNota4_RecalculaPos:		
 		push R0
 		push R1
 		push R2
@@ -541,7 +499,7 @@ MoveNota4:
 		loadn R1, #40
 		add R0, R0, R1	; pos = pos + 40
 			
-	 	MoveNota4_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora	 		
+	 	MoveNota4_RecalculaPos_Fim:	 		
 			store posNota4, R0
 			pop R3
 			pop R2
@@ -563,11 +521,11 @@ MoveNota4:
 		push R4
 		push R5
 
-		load R0, posAntNota4	; R0 == posAnt
-		loadn R1, #1200		; R1 = posAnt
+		load R0, posAntNota4	
+		loadn R1, #1200		
 		cmp r0, r1
 		jle MoveNota4_Apaga_Skip
-		loadn r5, #' '		; Se o Tiro passa sobre a Nave, apaga com um X, senao apaga com o cenario 
+		loadn r5, #' '		; 
 		jmp MoveNota4_Apaga_Fim
 
 	 	MoveNota4_Apaga_Skip:	
@@ -593,7 +551,7 @@ MoveNota4:
 			rts
 		
 	
-	MoveNota4_Desenha:	; Desenha caractere da Nave
+	MoveNota4_Desenha:	;Desenha o caractere da Nota
 		push R0
 		push R1
 		push R2
@@ -603,14 +561,14 @@ MoveNota4:
 		add r1, r1, r2
 		load R0, posNota4
 		outchar R1, R0
-		store posAntNota4, R0	; Atualiza Posicao Anterior da Nave = Posicao Atual
+		store posAntNota4, R0	; Atualiza Posicao Anterior da Nota = Posicao Atual
 		
 		pop R2
 		pop R1
 		pop R0
 		rts
 
-ChecaPos:
+ChecaPontuacao:
 	push r0
 	push r1
 	push r2
@@ -618,9 +576,10 @@ ChecaPos:
 	push r4
 	push r5
 	
-	inchar R1				; Le Teclado para controlar a Nave
+	inchar R1				; Le Teclado para verificar pontuacao
 	loadn R5, #0
 
+	;Compara a tecla digitada pelo usuario
 	loadn R2, #'d'
 	cmp R1, R2
 	jeq ColisaoPos_D
@@ -637,7 +596,7 @@ ChecaPos:
 	cmp R1, R2
 	jeq ColisaoPos_K
 	
-	ChecaPos_Fim:
+	ChecaPontuacao_Fim:
 	pop r5
 	pop r4
 	pop r3
@@ -648,6 +607,7 @@ ChecaPos:
 	
 	
 	ColisaoPos_D:
+		;Calculos para determinar posicao da nota em relacao à tela
 		loadn r0, #tela1Linha0
 		load r1, posNota1
 		add r2, r1, r0
@@ -657,33 +617,28 @@ ChecaPos:
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
 		
 		
-		;loadn r7, #0
-		;outchar r5, r7
-		
-		
+		;Comparacao o usuario pressionou no momento correto a tecla correspondente
 		loadn R4, #'_'
-		
-		;loadn r7, #1
-		;outchar r4, r7
-		
 		cmp r5, r4			
-		jne ChecaPos_Fim
+		jne ChecaPontuacao_Fim
 		
+		;Imprime na tela se o usuario acertou a tecla correta
 		loadn r7, #402
 		loadn r6, #1280
 		loadn r0, #'D'
 		add r6, r6, r0
-		
 		outchar r6, r7 
 		
+		;Aumenta o valor do score e o exibe atualizado
 		load r3, scoreInt
 		loadn r4, #20
 		add r3, r3, r4
 		store scoreInt, r3
 		call ImprimeScore
-		jmp ChecaPos_Fim
+		jmp ChecaPontuacao_Fim
 	
 	ColisaoPos_F:
+		;Calculos para determinar posicao da nota em relacao à tela
 		loadn r0, #tela1Linha0
 		load r1, posNota2
 		add r2, r1, r0
@@ -691,25 +646,29 @@ ChecaPos:
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		
+		;Comparacao o usuario pressionou no momento correto a tecla correspondente
 		loadn R4, #'_'
 		cmp r5, r4			
-		jne ChecaPos_Fim
+		jne ChecaPontuacao_Fim
 		
+		;Imprime na tela se o usuario acertou a tecla correta
 		loadn r7, #402
 		loadn r6, #256
 		loadn r0, #'F'
 		add r6, r6, r0
-		
 		outchar r6, r7 
 		
+		;Aumenta o valor do score e o exibe atualizado
 		load r3, scoreInt
 		loadn r4, #20
 		add r3, r3, r4
 		store scoreInt, r3
 		call ImprimeScore
-		jmp ChecaPos_Fim
+		jmp ChecaPontuacao_Fim
 		
 	ColisaoPos_J:
+		;Calculos para determinar posicao da nota em relacao à tela
 		loadn r0, #tela1Linha0
 		load r1, posNota3
 		add r2, r1, r0
@@ -717,25 +676,29 @@ ChecaPos:
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		
+		;Comparacao o usuario pressionou no momento correto a tecla correspondente
 		loadn R4, #'_'
 		cmp r5, r4			
-		jne ChecaPos_Fim
+		jne ChecaPontuacao_Fim
 		
+		;Imprime na tela se o usuario acertou a tecla correta
 		loadn r7, #402
 		loadn r6, #2816
 		loadn r0, #'J'
 		add r6, r6, r0
-		
 		outchar r6, r7 
 		
+		;Aumenta o valor do score e o exibe atualizado
 		load r3, scoreInt
 		loadn r4, #20
 		add r3, r3, r4
 		store scoreInt, r3
 		call ImprimeScore
-		jmp ChecaPos_Fim
+		jmp ChecaPontuacao_Fim
 		
 	ColisaoPos_K:
+		;Calculos para determinar posicao da nota em relacao à tela
 		loadn r0, #tela1Linha0
 		load r1, posNota4
 		add r2, r1, r0
@@ -743,28 +706,29 @@ ChecaPos:
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
+		
+		;Comparacao o usuario pressionou no momento correto a tecla correspondente
 		loadn R4, #'_'
 		cmp r5, r4			
-		jne ChecaPos_Fim
+		jne ChecaPontuacao_Fim
 		
-		
+		;Imprime na tela se o usuario acertou a tecla correta
 		loadn r7, #402
 		loadn r6, #3072
 		loadn r0, #'K'
 		add r6, r6, r0
-		
 		outchar r6, r7 
 		
+		;Aumenta o valor do score e o exibe atualizado
 		load r3, scoreInt
 		loadn r4, #20
 		add r3, r3, r4
 		store scoreInt, r3
 		call ImprimeScore
-		jmp ChecaPos_Fim
+		jmp ChecaPontuacao_Fim
 
 		
 Delay:
-	;Utiliza Push e Pop para nao afetar os registradores do programa principal
 	push r0
 	push r1
 	
@@ -782,6 +746,7 @@ Delay:
 	
 	rts
 
+;Impressao do score
 ImprimeScore:
 	push r0
 	push r1
@@ -810,7 +775,6 @@ ImprimeScore:
 	
 	rts
 	
-
 	ScoreToChar:
 		push r0
 		push r1
@@ -851,7 +815,7 @@ ImprimeScore:
 		pop r0
 		
 		rts
-
+;Imprime a funcao de score na tela final de jogo
 ImprimeScoreFinal:
 	push r0
 	push r1
@@ -922,8 +886,8 @@ ImprimeScoreFinal:
 		
 		rts
 
-DigLetra:	
 ; Espera que uma tecla seja digitada e salva na variavel global "Letra"
+DigLetra:	
 	push r0
 	push r1
 	loadn r1, #255	; Se nao digitar nada vem 255
@@ -967,30 +931,7 @@ Imprimestr:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o pr
 		pop r1
 		pop r0
 		rts
-		
-		
-clear:
-	push r0
-	push r1
-	push r2
 
-	loadn r0, #0
-	loadn r1, #1100
-	loadn r2, #' '
-	loopClear:
-		cmp r0, r1
-		jeq loopClearSai
-		outchar r2, r0
-		inc r0
-		jmp loopClear
-		
-	loopClearSai:	 
-		pop r2
-		pop r1
-		pop r0
-		rts
-
-	
 	
 ImprimeTela: 
 	;  Rotina de Impresao de Cenario na Tela Inteira
@@ -1113,20 +1054,6 @@ ApagaTela:
 	pop r1
 	pop r0
 	rts	
-	
-	
-	
-leTeclado:
-	push r0
-	loadn r0, #255
-	
-	loopLe:
-		inchar r3
-		cmp r0, r3
-		jeq loopLe
-	
-	pop r0
-	rts
 	
 	
 telaInicio1Linha0 : string "                                        "
