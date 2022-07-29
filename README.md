@@ -103,14 +103,14 @@ O objetivo do jogo é marcar a máxima pontuação possível durante a partida. 
 
 ### Telas de Jogo
 
-![inicio1](https://user-images.githubusercontent.com/37368029/181780868-00124224-42f7-40b0-bb88-a5f6f5c08a24.png)
-
+![1](https://user-images.githubusercontent.com/37368029/181840861-8f0ee22a-b9b9-4bc3-9fe8-6ad0e1a031e8.png)
 
 Ao pressionar a tecla no momento exato a pontuação do score aumenta.
-![imagemjogo1](https://user-images.githubusercontent.com/37368029/181780889-255e1f62-9465-4dcc-9c0a-5a3124e7c67e.png)
+![2](https://user-images.githubusercontent.com/37368029/181840877-4e5dc648-6e5d-47d3-99e9-152e9c27e898.png)
 
 Ao fim do round o programa exibe o score acumulado e pergunta se o player deseja jogar novamente.
-![imagemfim1](https://user-images.githubusercontent.com/37368029/181780921-a04d15fb-3002-409a-81d8-be876ff27b4d.png)
+![3](https://user-images.githubusercontent.com/37368029/181840894-d01ffb3f-894c-4d95-86a4-b6db908dd11e.png)
+
 
 
 
