@@ -42,7 +42,7 @@ posAntNota4 : var #1
 
 ;Armazena os valores do score
 scoreInt : var #4
-scoreChar : var #4
+scoreChar : var #5
 
 ;---- Inicio do Programa Principal -----
 
