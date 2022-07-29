@@ -745,9 +745,9 @@ begin
 					LoadReg(RX) := '1';
 				else
 					selM6 := sMeM;
-					LoadFR := '1';
-				state := fetch;
+					LoadFR := '1';				
 				end if;
+				state := fetch;
 			END IF;		
 				
 -- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
