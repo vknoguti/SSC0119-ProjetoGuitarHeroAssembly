@@ -7,6 +7,8 @@
 ;	3) Qual e' a Sequencia de Operacoes: Descrever todos os comandos que tem que dar nos cilos de Dec e Exec
 ;	4) Ja' terminou??? Cumpriu o que tinha que fazer??? O PC esta' pronto para a proxima instrucao (cuidado com Load, Loadn, Store, Jmp, Call)
 
+	
+	
 	; Teste do Loadn
 	loadn r0, #0		
 	loadn r1, #'A'		
@@ -139,7 +141,6 @@ CallMenorIgual:
 	rts
 
 CallSai:	
-
 	; Teste do PUSH e POP
 	loadn r0, #30
 	loadn r1, #'P'
@@ -147,17 +148,16 @@ CallSai:
 	pop r2
 	outchar r2, r0		; Printa P na linha 30
 
-;Instrução NAND
 NovaInstrucao: 
 	; Teste do Nand
 	loadn r1, #65525
 	loadn r2, #65530
 	nand r3, r1, r2
-	loadn r4, #15
+	loadn r4, #15	
 	cmp r3, r4
 	jne Fim
-	loadn r0, #'G'
-	loadn r1, #20
+	loadn r0, #'Q'
+	loadn r1, #32
 	outchar r0, r1		; Printa K na linha 20
 
 Fim:	
