@@ -60,7 +60,12 @@ main:
 	call ImprimeTela2
 	
 	;Espera que o usuario pressione uma tecla para prosseguir ao jogo
-	call DigLetra
+	loadn r1, #' '
+	;Espera que o usuario pressione uma tecla para prosseguir ao jogo
+	Loop_Inicio:
+		inchar r0			; Le o teclado, se nada for digitado = 255
+		cmp r0, r1			;compara r0 com 255
+		jne Loop_Inicio
 	
 	
 	;Limpa o conteudo da tela
@@ -128,7 +133,7 @@ main:
 		
 		;Chama a subrotina Fim caso a quantidade de tempo por jogo terminar
 		;ou continua no Loop do jogo caso contrário
-		loadn r0, #3500
+		loadn r0, #1200
 		cmp r2, r0
 		jgr Fim
 	
@@ -137,19 +142,25 @@ main:
 	Fim:
 		;Modifica para a tela final
 		loadn r1, #telaFinal1Linha0
-		loadn r2, #0
+		loadn r2, #2304
 		loadn r6, #tela1Linha0
 		call ImprimeTela
 		call ImprimeScoreFinal
 		
-		;Verifica se o usuario deseja jogar novamente
-		call DigLetra
-		loadn r0, #'s'
-		load r1, Letra
-		cmp r0, r1	
-		jeq main	; tecla == 's'
-					; fim do programa caso tecla != 's'
+		Loop_Fim:
+			;Verifica se o usuario deseja jogar novamente
+			call DigLetra
+			loadn r0, #'s'
+			load r1, Letra
+			cmp r0, r1	
+			jeq main	; tecla == 's'
+						; fim do programa caso tecla != 's'
+			loadn r0, #'n'
+			cmp r0, r1
+			jne Loop_Fim
 		
+	call ApagaTela
+	
 	halt
 	
 ;---- Fim do Programa Principal -----
@@ -734,7 +745,7 @@ Delay:
 	
 	loadn r1, #5 				; a
    	Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
-	loadn r0, #30000			; b
+	loadn r0, #1500				; b
    	Delay_volta: 
 	dec r0						; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
 	jnz Delay_volta	
@@ -1081,9 +1092,9 @@ telaInicio1Linha21: string "                  `~'    `-.____.-'     "
 telaInicio1Linha22: string "                                        "
 telaInicio1Linha23: string "                                        "
 telaInicio1Linha24: string "                                        "
-telaInicio1Linha25: string "            |_________________|         "
-telaInicio1Linha26: string "            |JOGUE COM D F J K|         "
-telaInicio1Linha27: string "            |-----------------|         "
+telaInicio1Linha25: string "           |_________________|          "
+telaInicio1Linha26: string "           |JOGUE COM D F J K|          "
+telaInicio1Linha27: string "           |-----------------|          "
 telaInicio1Linha28: string "                                        "
 telaInicio1Linha29: string "                                        "
 
@@ -1116,7 +1127,7 @@ telaInicio2Linha25: string "                                        "
 telaInicio2Linha26: string "                                        "
 telaInicio2Linha27: string "                                        "
 telaInicio2Linha28: string "                                        "
-telaInicio2Linha29: string "Pressione qualquer tecla para continuar:"
+telaInicio2Linha29: string "     Pressione espaco para continuar:   "
 
 
 telaJogo1Linha0  : string "SCORE   |     |     |     |     |       "
@@ -1243,4 +1254,3 @@ telaFinal1Linha26: string "            |   SCORE:        |         "
 telaFinal1Linha27: string "            |-----------------|         "
 telaFinal1Linha28: string "                                        "
 telaFinal1Linha29: string "                                        "
-
