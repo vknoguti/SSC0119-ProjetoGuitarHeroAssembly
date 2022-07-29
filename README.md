@@ -2,7 +2,7 @@
 ## Professor: Eduardo do Valle Simões
 ## Modificações na CPU
 Implementação da instrução aritmética NAND.
-### NAND
+## NAND
 ### defs.h
 ```c
 #define BREAKP_CODE             94
