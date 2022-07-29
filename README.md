@@ -18,7 +18,7 @@ Implementação da instrução aritmética NAND.
 #define NOP_CODE                0
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
-#define NAND_CODE				98
+#define NAND_CODE		98
 
 /* Logic Instructions (All should begin with "01"): */
 #define LAND            "010010"
@@ -27,10 +27,10 @@ Implementação da instrução aritmética NAND.
 #define LNOT            "010101"
 #define SHIFT           "010000"
 #define CMP             "010110"
-#define LNAND			"010001"
+#define LNAND		"010001"
 
 /* NAND */
-#define NAND_STR				"NAND"
+#define NAND_STR	"NAND"
 ```
 ### montador.c
 ```c
