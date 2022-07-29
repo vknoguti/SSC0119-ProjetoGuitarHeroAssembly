@@ -1,4 +1,4 @@
-# SSC0119-ProjetoJogoAssembly
+# SSC0119 - Prática em Organização e Arquitetura de Computadores
 ## Batalha Naval
 ## Instrução a ser adicionada
 NAND
