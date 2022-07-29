@@ -111,6 +111,9 @@ Ao pressionar a tecla no momento exato a pontuação do score aumenta.
 Ao fim do round o programa exibe o score acumulado e pergunta se o player deseja jogar novamente.
 ![3](https://user-images.githubusercontent.com/37368029/181840894-d01ffb3f-894c-4d95-86a4-b6db908dd11e.png)
 
+## Link do Vídeo:
+https://youtu.be/T6S8XwPIv5Q
+
 
 
 
