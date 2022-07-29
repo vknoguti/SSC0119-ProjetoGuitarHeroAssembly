@@ -1,5 +1,5 @@
 # SSC0119 - Prática em Organização e Arquitetura de Computadores
-## Batalha Naval
+## Professor: Eduardo do Valle Simões
 ## Instrução a ser adicionada
 NAND
 ### defs.h
