@@ -1,9 +1,12 @@
 # SSC0119 - Prática em Organização e Arquitetura de Computadores
 ## Professor: Eduardo do Valle Simões
 
-## Membros:
-|Vinicius Kazuo Fujikawa Noguti| 11803121|
-|Thiago Shimada                | 12691032|
+## Membros
+| **Aluno**                         | **nUSP** |
+|-----------------------------------|-----------|
+| Vinicius Kazuo Fujikawa Noguti    | 11803121  |
+| Thiago Shimada                    | 12691032  |
+
 
 ## Modificações na CPU
 Implementação da instrução aritmética NAND.
