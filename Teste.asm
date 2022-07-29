@@ -116,16 +116,12 @@ main:
 	loadn r2, #256
 	outchar r3, r0
 	
-	loadn r3, #495
+	loadn r3, #0
 	store scoreInt, r3
 	
 	call ImprimeScore
 	
-	loadn r2, #1000
-	add r3, r3, r2
-	store scoreInt, r3
-	call Delay
-	
+
 	call ApagaTela
 	
 	loadn r1, #telaJogo1Linha0
@@ -152,26 +148,24 @@ main:
 	store posAntNota4, r0
 	
 	
-	loadn R2, #0
-	
 	Loop:
 		
-		loadn R3, #8
+		loadn R3, #3
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota1	; Chama Rotina de movimentacao da Nave
 		
-		loadn R3, #8
+		loadn R3, #4
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota2	; Chama Rotina de movimentacao da Nave
 		
-		loadn R3, #8
+		loadn R3, #5
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota3	; Chama Rotina de movimentacao da Nave
 		
-		loadn R3, #8
+		loadn R3, #7
 		mod R3, R2, R3
 		cmp R3, R4		; if (mod(c/10)==0
 		ceq MoveNota4	; Chama Rotina de movimentacao da Nave
@@ -180,7 +174,15 @@ main:
 	
 		inc R2 	;c++
 		call Delay
+		
+		loadn r0, #3500
+		cmp r2, r0
+		jgr final
+	
 		jmp Loop
+		
+	final:
+		call ApagaTela
 	
 	halt
 	
@@ -278,7 +280,7 @@ MoveNota1:
 		push R1
 		push R2
 		
-		Loadn R1, #'&'	; Nave
+		Loadn R1, #'$'	; Nave
 		Loadn R2, #1280
 		add r1, r1, r2
 		load R0, posNota1
@@ -380,7 +382,7 @@ MoveNota2:
 		push R1
 		push R2
 		
-		Loadn R1, #'@'	; Nave
+		Loadn R1, #'F'	; Nave
 		Loadn R2, #256
 		add r1, r1, r2
 		load R0, posNota2
@@ -482,7 +484,7 @@ MoveNota3:
 		push R1
 		push R2
 		
-		Loadn R1, #'$'	; Nave
+		Loadn R1, #'J'	
 		Loadn R2, #2816
 		add r1, r1, r2
 		load R0, posNota3
@@ -498,6 +500,7 @@ MoveNota4:
 	push r0
 	push r1
 	
+		
 	call MoveNota4_RecalculaPos
 		
 	load r0, posNota4
@@ -537,6 +540,7 @@ MoveNota4:
 			rts
 		
 		MoveNota4_Reinicio:
+			
 			loadn R0, #29
 			jmp MoveNota4_RecalculaPos_Fim
 	
@@ -584,7 +588,7 @@ MoveNota4:
 		push R1
 		push R2
 		
-		Loadn R1, #'#'	; Nave
+		Loadn R1, #'K'	; Nave
 		Loadn R2, #3072
 		add r1, r1, r2
 		load R0, posNota4
@@ -641,9 +645,26 @@ ChecaPos:
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
-		loadn R4, #'='
+		
+		
+		;loadn r7, #0
+		;outchar r5, r7
+		
+		
+		loadn R4, #'_'
+		
+		;loadn r7, #1
+		;outchar r4, r7
+		
 		cmp r5, r4			
 		jne ChecaPos_Fim
+		
+		loadn r7, #402
+		loadn r6, #1280
+		loadn r0, #'D'
+		add r6, r6, r0
+		
+		outchar r6, r7 
 		
 		load r3, scoreInt
 		loadn r4, #20
@@ -654,15 +675,22 @@ ChecaPos:
 	
 	ColisaoPos_F:
 		loadn r0, #tela1Linha0
-		load r1, posNota1
+		load r1, posNota2
 		add r2, r1, r0
 		loadn R4, #40
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
-		loadn R4, #'='
+		loadn R4, #'_'
 		cmp r5, r4			
 		jne ChecaPos_Fim
+		
+		loadn r7, #402
+		loadn r6, #256
+		loadn r0, #'F'
+		add r6, r6, r0
+		
+		outchar r6, r7 
 		
 		load r3, scoreInt
 		loadn r4, #20
@@ -673,15 +701,22 @@ ChecaPos:
 		
 	ColisaoPos_J:
 		loadn r0, #tela1Linha0
-		load r1, posNota1
+		load r1, posNota3
 		add r2, r1, r0
 		loadn R4, #40
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
-		loadn R4, #'='
+		loadn R4, #'_'
 		cmp r5, r4			
 		jne ChecaPos_Fim
+		
+		loadn r7, #402
+		loadn r6, #2816
+		loadn r0, #'J'
+		add r6, r6, r0
+		
+		outchar r6, r7 
 		
 		load r3, scoreInt
 		loadn r4, #20
@@ -692,15 +727,23 @@ ChecaPos:
 		
 	ColisaoPos_K:
 		loadn r0, #tela1Linha0
-		load r1, posNota1
+		load r1, posNota4
 		add r2, r1, r0
 		loadn R4, #40
 		div R3, R0, R4	; R3 = posAnt/40
 		add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40			
 		loadi R5, R2	; R5 = Char (Tela(posAnt))
-		loadn R4, #'='
+		loadn R4, #'_'
 		cmp r5, r4			
 		jne ChecaPos_Fim
+		
+		
+		loadn r7, #402
+		loadn r6, #3072
+		loadn r0, #'K'
+		add r6, r6, r0
+		
+		outchar r6, r7 
 		
 		load r3, scoreInt
 		loadn r4, #20
@@ -770,6 +813,8 @@ ScoreToChar:
 	loadn r0, #scoreChar		; Posicao a salvar a pontuacao
 	loadn r1, #48		; 0 em ascii
 	load  r2, scoreInt		; Valor da pontuacao
+
+
 	loadn r3, #10000
 	loadn r4, #10
 	loadn r6, #0
@@ -1069,18 +1114,18 @@ telaJogo1Linha14 : string "        |     |     |     |     |       "
 telaJogo1Linha15 : string "        |     |     |     |     |       "
 telaJogo1Linha16 : string "        |     |     |     |     |       "
 telaJogo1Linha17 : string "        |     |     |     |     |       "
-telaJogo1Linha18 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha19 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha20 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha21 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha22 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha23 : string "        |=====|=====|=====|=====|       "
+telaJogo1Linha18 : string "        |     |     |     |     |       "
+telaJogo1Linha19 : string "        |     |     |     |     |       "
+telaJogo1Linha20 : string "        |     |     |     |     |       "
+telaJogo1Linha21 : string "        |     |     |     |     |       "
+telaJogo1Linha22 : string "        |     |     |     |     |       "
+telaJogo1Linha23 : string "        |     |     |     |     |       "
 telaJogo1Linha24 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha25 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha26 : string "        |=====|=====|=====|=====|       "
-telaJogo1Linha27 : string "        |     |     |     |     |       "
-telaJogo1Linha28 : string "        |     |     |     |     |       "
-telaJogo1Linha29 : string "           D     F     J     K          "
+telaJogo1Linha25 : string "        |     |     |     |     |       "
+telaJogo1Linha26 : string "        |     |     |     |     |       "
+telaJogo1Linha27 : string "        |_____|_____|_____|_____|       "
+telaJogo1Linha28 : string "        | D   | F   | J   | K   |       "
+telaJogo1Linha29 : string "                                        "
 
 tela0Linha0  : string "                                        "
 tela0Linha1  : string "                                        "
