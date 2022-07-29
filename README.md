@@ -1,6 +1,7 @@
 # SSC0119 - Prática em Organização e Arquitetura de Computadores
 ## Professor: Eduardo do Valle Simões
-## Instrução a ser adicionada
+## Modificações na CPU
+Implementação da instrução aritmética NAND.
 NAND
 ### defs.h
 ```c
