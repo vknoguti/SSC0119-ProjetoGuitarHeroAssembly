@@ -9,7 +9,7 @@
 
 
 ## Modificações na CPU
-Implementação da instrução aritmética NAND.
+Implementação da instrução lógica NAND.
 ## NAND
 ### defs.h
 ```c
